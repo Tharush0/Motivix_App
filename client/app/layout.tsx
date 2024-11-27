@@ -3,6 +3,11 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import UserProvider from "@/providers/UserProvider";
 import { Toaster } from "react-hot-toast";
+import MiniSidebar from "./Components/MiniSidebar/MiniSidebar";
+import Header from "./Components/Header/Header";
+import SidebarProvider from "@/providers/SidebarProvider";
+import MainLayout from "@/providers/MainLayout";
+import MainContentLayout from "@/providers/MainContentLayout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,8 +33,20 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <Toaster position="top-center" />
-        <UserProvider>{children}</UserProvider>
+        <UserProvider>
+          <Toaster position="top-center" />
+
+          <div className="h-full flex overflow-hidden">
+            <MiniSidebar />
+            <div className="flex-1 flex flex-col">
+              <Header />
+              <MainContentLayout>
+                <MainLayout>{children}</MainLayout>
+                <SidebarProvider />
+              </MainContentLayout>
+            </div>
+          </div>
+        </UserProvider>
       </body>
     </html>
   );
