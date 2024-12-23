@@ -1,11 +1,16 @@
 "use client";
+import { useTasks } from "@/context/taskContext";
 import { useUserContext } from "@/context/userContext";
 import { github, moon, profile } from "@/utils/Icon";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 function Header() {
   const { user } = useUserContext();
+  const { openModalForAdd, activeTasks } = useTasks();
+
+  const router = useRouter();
 
   const { name } = user;
 
@@ -18,14 +23,14 @@ function Header() {
           <span role="img" aria-label="wave">
             👋
           </span>
-          {userId ? `Welcome, ${name}!` : "Welcome to Motivix!"}
+          {userId ? `Welcome, ${name}!` : "Welcome to Taskfyer"}
         </h1>
         <p className="text-sm">
           {userId ? (
             <>
               You have{" "}
               <span className="font-bold text-[#3aafae]">
-                {/* {activeTasks.length} */}
+                {activeTasks.length}
               </span>
               &nbsp;active tasks
             </>
@@ -39,11 +44,11 @@ function Header() {
           className="px-8 py-3 bg-[#3aafae] text-white rounded-[50px]
           hover:bg-[#00A1F1] hover:text-white transition-all duration-200 ease-in-out"
           onClick={() => {
-            // if (userId) {
-            //   openModalForAdd();
-            // } else {
-            //   router.push("/login");
-            // }
+            if (userId) {
+              openModalForAdd();
+            } else {
+              router.push("/login");
+            }
           }}>
           {userId ? "Add a new Task" : "Login / Register"}
         </button>
